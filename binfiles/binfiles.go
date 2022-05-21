@@ -4,9 +4,9 @@ import (
 	"embed"
 	"gopkg.in/macaron.v1"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -37,12 +37,33 @@ func New(fs *embed.FS, baseFolder string) BinFiles {
 	}
 }
 
+// Open is used to serve static files
 func (b BinFiles) Open(name string) (http.File, error) {
-	//TODO implement me
-	fname := path.Join(b.baseFolder, name)
-	log.Println("Opening static file " + fname)
-	return os.Open(fname)
 
+	var fname string
+	//basepath := filepath.Join(b.baseFolder, "/")
+	//if !strings.HasPrefix(name, basepath) {
+	fname = path.Join(b.baseFolder, name)
+	//} else {
+	//	fname = name
+	//}
+
+	log.Println("Opening static file " + fname)
+	file, err := b.fs.Open(fname)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	defer file.Close()
+	content, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	hf := NewHttpFile(fname, content, defaultFileTimestamp)
+	return hf, err
 }
 
 func (b BinFiles) ListFiles() (filelist []macaron.TemplateFile) {

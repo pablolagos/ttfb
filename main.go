@@ -17,9 +17,12 @@ var staticFS embed.FS
 //go:embed templates
 var teplatesFS embed.FS
 
+var RunMode = "development"
+
 func main() {
 
 	m := macaron.New()
+	macaron.Env = RunMode
 	m.Use(macaron.Static("public",
 		macaron.StaticOptions{
 			FileSystem:  binfiles.New(&staticFS, "public"),
@@ -35,8 +38,13 @@ func main() {
 	}))
 
 	m.Get("/", controllers.Home)
+	m.Post("/ttfb", controllers.CheckTTFB)
 
-	m.Run(8080)
+	if RunMode == "development" {
+		m.Run(8080)
+	} else {
+		m.Run(80)
+	}
 	os.Exit(0)
 
 }
