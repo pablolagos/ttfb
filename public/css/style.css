@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+#topbar {
+    background-color: #232946;
+    color:#fffffe;
+}
+
+#topbar a, #topbar a:visited {
+    color:#fffffe;
+    text-transform: none;
+}
+
+#content {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #d4d8f0;
+    color:  #232946;
+}
+
+#content .card {
+    border: 1px solid #232946;
+}
+
+.outbar {
+    width: 100%;
+}
+
+.bar {
+    height: 20px;
+    border-radius: 3px;
+}
+
+.bar-green {
+    background-color: #28a745;
+}
+
+body {
+    background-color: #d4d8f0;
+}

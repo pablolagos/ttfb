@@ -15,6 +15,6 @@ default:
 .PHONY: install
 upload: default
 	#rsync -a -P --rsync-path="sudo rsync" -e "ssh -i ~/.ssh/cdn-global.pem" powerwaf admin@3.217.61.177:/opt/ui/
-	rsync -a -P -e "ssh -i ~/.ssh/cdn-global.pem" speedtest root@www.webspeed.tools:/opt/speedtest/
-	@echo "Restarting pwafui..."
-	ssh -i ~/.ssh/cdn-global.pem root@www.webspeed.tools "systemctl restart speedtest"
+	rsync -a -P -e "ssh -i ~/.ssh/desarrollo.pem" speedtest root@webspeed.tools:/opt/speedtest/
+	@echo "Restarting speedtest..."
+	ssh -i ~/.ssh/desarrollo.pem root@webspeed.tools "systemctl restart speedtest"

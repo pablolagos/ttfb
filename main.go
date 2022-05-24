@@ -1,9 +1,11 @@
 package main
 
 import (
+	"crypto/tls"
 	"embed"
 	pongo22 "github.com/go-macaron/pongo2"
 	"gopkg.in/macaron.v1"
+	"log"
 	"net/http"
 	"os"
 	"speedtest/binfiles"
@@ -18,6 +20,9 @@ var staticFS embed.FS
 var teplatesFS embed.FS
 
 var RunMode = "development"
+
+const CERT_KEY = "/etc/speedtest/cert.key"
+const CERT_CRT = "/etc/speedtest/cert.crt"
 
 func main() {
 
@@ -38,13 +43,33 @@ func main() {
 	}))
 
 	m.Get("/", controllers.Home)
-	m.Post("/ttfb", controllers.CheckTTFB)
+	m.Get("/ttfb", controllers.CheckTTFB)
 
 	if RunMode == "development" {
 		m.Run(8080)
-	} else {
-		m.Run(80)
+		os.Exit(1)
 	}
-	os.Exit(0)
+
+	// Run server in http port
+	go m.Run(80)
+
+	tlsCert, err := tls.LoadX509KeyPair(CERT_CRT, CERT_KEY)
+	if err != nil {
+		log.Fatalf("Error reading ssl certificates: %s", err)
+	}
+
+	server := &http.Server{
+		Addr:    "0.0.0.0:443",
+		Handler: m,
+		TLSConfig: &tls.Config{
+			Certificates: []tls.Certificate{tlsCert},
+		},
+	}
+
+	log.Println("Listening TLS on " + server.Addr)
+	err = server.ListenAndServeTLS("", "")
+	if err != nil {
+		log.Println(err.Error())
+	}
 
 }

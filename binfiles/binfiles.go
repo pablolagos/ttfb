@@ -41,12 +41,7 @@ func New(fs *embed.FS, baseFolder string) BinFiles {
 func (b BinFiles) Open(name string) (http.File, error) {
 
 	var fname string
-	//basepath := filepath.Join(b.baseFolder, "/")
-	//if !strings.HasPrefix(name, basepath) {
 	fname = path.Join(b.baseFolder, name)
-	//} else {
-	//	fname = name
-	//}
 
 	log.Println("Opening static file " + fname)
 	file, err := b.fs.Open(fname)

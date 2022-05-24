@@ -1,0 +1,88 @@
+{% extends "template-base/base.tmpl" %}
+
+{% block content %}
+
+
+    <div class="px-3 py-3 pt-md-5 pb-md-5 mx-auto text-center">
+        <h1 class="display-4">Website speed results</h1>
+        <p class="text-center"><b>{{url}}</b></p>
+    </div>
+
+    <div class="d-none d-lg-block" style="margin-bottom: 20px"></div>
+
+    <div class="d-flex flex-row">
+        <div class="col col-md-4 align-self-stretch">
+            <div class="card" style="height: 100%">
+                <div class="card-body">
+                    <p class="text-center"><b>{{ url }}</b></p>
+                    <p class="text-center"><b>TTFB:<br>{{ res_wait}} milliseconds</b></p>
+                    <img style="display:block; margin-left: auto; margin-right: auto" src="/images/{{ stars }}-star.png" width="120">
+                    <p class="my-2 text-center"><b>{{ qualification | safe }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-8 align-self-stretch">
+            <div class="card" style="height: 100%">
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td>DNS</td>
+                            <td style="width: 90%; vertical-align: center;">
+                                <div class="outbar"><div class="bar bar-green" id="b1"></div></div>
+                            </td>
+                            <td>{{ res_dns }}&nbsp;ms</td></tr>
+                        <tr>
+                            <td>Connect</td>
+                            <td style="width: 90%; vertical-align: center;">
+                                <div class="outbar"><div class="bar bar-green" id="b2"></div></div>
+                            </td>
+                            <td>{{ res_connect }}&nbsp;ms</td></tr>
+                        <tr>
+                            <td>TLS</td>
+                            <td style="width: 90%; vertical-align: center;">
+                                <div class="outbar"><div class="bar bar-green" id="b3"></div></div>
+                            </td>
+                            <td>{{ res_tls }}&nbsp;ms</td></tr>
+                        <tr>
+                            <td>Wait</td>
+                            <td style="width: 90%; vertical-align: center;">
+                                <div class="outbar"><div class="bar bar-green" id="b4"></div></div>
+                            </td>
+                            <td>{{ res_wait }}&nbsp;ms</td></tr>
+                        <tr>
+                            <td>Transfer</td>
+                            <td style="width: 90%; vertical-align: center;">
+                                <div class="outbar"><div class="bar bar-green" id="b5"></div></div>
+                            </td>
+                            <td>{{ res_transfer }}&nbsp;ms</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section2">
+
+    </div>
+
+    <script>
+        let w=[{{w1}},{{w2}},{{w3}},{{w4}},{{w5}}];
+        let ml=0
+        document.getElementById('b1').setAttribute("style",`width:${w[0]}%; margin-left:0px`)
+        ml+= width = document.getElementById('b1').offsetWidth;
+
+        document.getElementById('b2').setAttribute("style",`width:${w[1]}%; margin-left:${ml}px`);
+        ml+= width = document.getElementById('b2').offsetWidth;
+
+        document.getElementById('b3').setAttribute("style",`width:${w[2]}%; margin-left:${ml}px`);
+        ml+= width = document.getElementById('b3').offsetWidth;
+
+        document.getElementById('b4').setAttribute("style",`width:${w[3]}%; margin-left:${ml}px`);
+        ml+= width = document.getElementById('b4').offsetWidth;
+
+        document.getElementById('b5').setAttribute("style",`width:${w[4]}%; margin-left:${ml}px`);
+
+    </script>
+{% endblock %}
