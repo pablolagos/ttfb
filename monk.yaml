@@ -1,0 +1,44 @@
+namespace: ttfb
+
+speedtest:
+  defines: runnable
+  metadata:
+    name: speedtest
+    description: >-
+      A Go web application for calculating the time to the first byte of
+      websites.
+    icon: https://emojiapi.dev/api/v1/robot.svg
+  containers:
+    speedtest:
+      image: env-3065.registry.local/speedtest:main-618e14d
+      build: .
+      dockerfile: Dockerfile.speedtest
+  services:
+    http:
+      description: HTTP port for web traffic
+      container: speedtest
+      port: 80
+      host-port: 80
+      publish: true
+      protocol: tcp
+    https:
+      description: HTTPS port for secure web traffic
+      container: speedtest
+      port: 443
+      host-port: 443
+      publish: true
+      protocol: tcp
+    http-alt:
+      description: Alternative HTTP port
+      container: speedtest
+      port: 8080
+      host-port: 8080
+      publish: true
+      protocol: tcp
+  connections: {}
+  variables: {}
+
+stack:
+  defines: group
+  members:
+    - ttfb/speedtest
